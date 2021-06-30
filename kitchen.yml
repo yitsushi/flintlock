@@ -1,0 +1,38 @@
+driver:
+  name: terraform
+  root_module_directory: test/infra
+
+provisioner:
+  name: terraform
+
+verifier:
+  name: terraform
+
+platforms:
+  - name: ubuntu
+    driver:
+      variables:
+        ssh_user: root
+    verifier:
+      systems:
+        - name: local
+          attrs_outputs:
+            customized_inspec_attribute: static_terraform_output
+          backend: local
+          controls:
+            - inspec_attributes
+            - state_file
+        - name: remote
+          attrs:
+            - test/integration/default/ubuntu_attributes.yml
+          backend: ssh
+          controls:
+            - operating_system
+            - reignite_host
+          key_files:
+            - test/infra/.ssh/id_rsa
+          hosts_output: public_ip
+          user: root
+
+suites:
+  - name: default

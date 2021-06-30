@@ -21,3 +21,9 @@ bin/
 .idea/
 
 .DS_Store
+
+# Test Kitchen
+.kitchen/
+
+.envrc
+.env
